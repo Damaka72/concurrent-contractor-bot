@@ -23,10 +23,25 @@ logger = logging.getLogger(__name__)
 
 class ConcurrentContractorBot:
     def __init__(self):
-        # Configuration
-       self.telegram_token = os.environ.get('TELEGRAM_BOT_TOKEN')
-self.airtable_token = os.environ.get('AIRTABLE_TOKEN')
-self.airtable_base_id = 'appHuRMaNwz4F49EF'  # The Concurrent Contractor Content Hub
+        # Configuration with debugging
+        self.telegram_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+        self.airtable_token = os.environ.get('AIRTABLE_TOKEN')
+        
+        # Debug environment variables
+        logger.info("Checking environment variables...")
+        if not self.telegram_token:
+            logger.error("TELEGRAM_BOT_TOKEN environment variable not set")
+            # Print all environment variables for debugging
+            logger.info(f"Available environment variables: {list(os.environ.keys())}")
+        else:
+            logger.info("TELEGRAM_BOT_TOKEN found")
+            
+        if not self.airtable_token:
+            logger.error("AIRTABLE_TOKEN environment variable not set")
+        else:
+            logger.info("AIRTABLE_TOKEN found")
+        
+        self.airtable_base_id = 'appHuRMaNwz4F49EF'  # The Concurrent Contractor Content Hub
         self.airtable_table_id = 'tblKQuyno76Df8pTH'  # Story Pipeline Management
         
         # Content ID counter - in production, this should be stored persistently
@@ -426,19 +441,24 @@ Ready to capture your next brilliant idea! 💡
 def main():
     """Start the bot"""
     # Check for required environment variables
-    if not os.getenv('TELEGRAM_BOT_TOKEN'):
+    telegram_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    airtable_token = os.environ.get('AIRTABLE_TOKEN')
+    
+    if not telegram_token:
         logger.error("TELEGRAM_BOT_TOKEN environment variable not set")
+        logger.info(f"Available environment variables: {list(os.environ.keys())}")
         return
     
-    if not os.getenv('AIRTABLE_TOKEN'):
+    if not airtable_token:
         logger.error("AIRTABLE_TOKEN environment variable not set")
+        logger.info(f"Available environment variables: {list(os.environ.keys())}")
         return
     
     # Create bot instance
     bot = ConcurrentContractorBot()
     
     # Create application
-    application = Application.builder().token(bot.telegram_token).build()
+    application = Application.builder().token(telegram_token).build()
     
     # Set up handlers
     bot.setup_handlers(application)
