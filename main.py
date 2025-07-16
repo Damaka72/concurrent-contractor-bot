@@ -24,9 +24,9 @@ logger = logging.getLogger(__name__)
 class ConcurrentContractorBot:
     def __init__(self):
         # Configuration
-        self.telegram_token = os.getenv('TELEGRAM_BOT_TOKEN')
-        self.airtable_token = os.getenv('AIRTABLE_TOKEN')
-        self.airtable_base_id = 'appHuRMaNwz4F49EF'  # The Concurrent Contractor Content Hub
+       self.telegram_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+self.airtable_token = os.environ.get('AIRTABLE_TOKEN')
+self.airtable_base_id = 'appHuRMaNwz4F49EF'  # The Concurrent Contractor Content Hub
         self.airtable_table_id = 'tblKQuyno76Df8pTH'  # Story Pipeline Management
         
         # Content ID counter - in production, this should be stored persistently
